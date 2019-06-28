@@ -1,0 +1,58 @@
+<html>
+	<head>
+		<title>My first three.js app</title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+	</head>
+	<body>
+		<script src="three.min.js"></script>
+		<script>
+			var scene = new THREE.Scene();
+			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+
+			var renderer = new THREE.WebGLRenderer();
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			document.body.appendChild( renderer.domElement );
+
+            let cube = null;
+
+            var loader = new THREE.TextureLoader();
+            loader.load(
+                    // resource URL
+                'sample.jpg',
+                // onLoad callback
+                function ( texture ) {
+                    // in this example we create the material when the texture is loaded
+                    var material = new THREE.MeshBasicMaterial( {
+                        map: texture
+                    } );
+                    var geometry = new THREE.CubeGeometry( 1, 1, 1 );
+                    // var material = new THREE.MeshBasicMaterial( { color: 0xf0f000 } );
+                    cube = new THREE.Mesh( geometry, material );
+                    scene.add( cube );
+
+                    camera.position.z = 5;
+
+                    var animate = function () {
+                        requestAnimationFrame( animate );
+
+                        cube.rotation.x += 0.01;
+                        cube.rotation.y += 0.01;
+
+                        renderer.render( scene, camera );
+                    };
+
+                    animate();
+                },
+                // onProgress callback currently not supported
+                undefined,
+                // onError callback
+                function ( err ) {
+                    console.error( 'An error happened.' );
+                }
+            );
+		</script>
+	</body>
+</html>
