@@ -1,58 +1,81 @@
+<!--
+TODO:
+// add light
+// change Material
+-->
+
 <html>
-	<head>
-		<title>My first three.js app</title>
-		<style>
-			body { margin: 0; }
-			canvas { width: 100%; height: 100% }
-		</style>
-	</head>
-	<body>
-		<script src="three.min.js"></script>
-		<script>
-			var scene = new THREE.Scene();
-			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
 
-			var renderer = new THREE.WebGLRenderer();
-			renderer.setSize( window.innerWidth, window.innerHeight );
-			document.body.appendChild( renderer.domElement );
+<head>
+  <title>My first three.js app</title>
+  <style>
+    body {
+      margin: 0;
+    }
 
-            let cube = null;
+    canvas {
+      width: 100%;
+      height: 100%
+    }
+  </style>
+</head>
 
-            var loader = new THREE.TextureLoader();
-            loader.load(
-                    // resource URL
-                'sample.jpg',
-                // onLoad callback
-                function ( texture ) {
-                    // in this example we create the material when the texture is loaded
-                    var material = new THREE.MeshBasicMaterial( {
-                        map: texture
-                    } );
-                    var geometry = new THREE.CubeGeometry( 1, 1, 1 );
-                    // var material = new THREE.MeshBasicMaterial( { color: 0xf0f000 } );
-                    cube = new THREE.Mesh( geometry, material );
-                    scene.add( cube );
+<body>
+  <!-- <script src="threejs/three.min.js"></script> -->
+  <script type="module">
+    import * as THREE from './threejs/three.module.js';
+    import { OrbitControls } from './threejs/OrbitControls.js';
 
-                    camera.position.z = 5;
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
-                    var animate = function () {
-                        requestAnimationFrame( animate );
+    var renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
 
-                        cube.rotation.x += 0.01;
-                        cube.rotation.y += 0.01;
+    let cube = null;
 
-                        renderer.render( scene, camera );
-                    };
+    let controls = new OrbitControls(camera, renderer.domElement);
+    //controls.addEventListener( 'change', render ); // call this only in static scenes (i.e., if there is no animation loop)
+    controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
+    controls.dampingFactor = 0.25;
+    controls.screenSpacePanning = false;
+    controls.minDistance = 1;
+    controls.maxDistance = 5;
+    controls.maxPolarAngle = Math.PI / 2;
 
-                    animate();
-                },
-                // onProgress callback currently not supported
-                undefined,
-                // onError callback
-                function ( err ) {
-                    console.error( 'An error happened.' );
-                }
-            );
-		</script>
-	</body>
+    const loadManager = new THREE.LoadingManager();
+    const loader = new THREE.TextureLoader(loadManager);
+
+    const materials = [
+      new THREE.MeshBasicMaterial({ map: loader.load('resources/1.jpg') }),
+      new THREE.MeshBasicMaterial({ map: loader.load('resources/bizongo.jpg') }),
+      new THREE.MeshBasicMaterial({ map: loader.load('resources/eye.jpg') }),
+      new THREE.MeshBasicMaterial({ map: loader.load('resources/facebook.png') }),
+      new THREE.MeshBasicMaterial({ map: loader.load('resources/pintrest.png') }),
+      new THREE.MeshBasicMaterial({ map: loader.load('resources/windows.png') }),
+    ];
+
+    loadManager.onLoad = () => {
+      var geometry = new THREE.CubeGeometry(1, 1, 1);
+      cube = new THREE.Mesh(geometry, materials);
+      camera.position.z = 5;
+      scene.add(cube);
+    }
+
+    var animate = function () {
+      requestAnimationFrame(animate);
+
+      // cube.rotation.x += 0.01;
+      // cube.rotation.y += 0.01;
+      controls.update();
+
+      renderer.render(scene, camera);
+    };
+
+    animate();
+
+  </script>
+</body>
+
 </html>
