@@ -7,75 +7,39 @@ TODO:
 <html>
 
 <head>
-  <title>My first three.js app</title>
-  <style>
-    body {
-      margin: 0;
-    }
-
-    canvas {
-      width: 100%;
-      height: 100%
-    }
-  </style>
+  <title>#D Artwork Placement</title>
+  <link href="threejs/cropper.min.css" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet">
 </head>
 
 <body>
-  <!-- <script src="threejs/three.min.js"></script> -->
-  <script type="module">
-    import * as THREE from './threejs/three.module.js';
-    import { OrbitControls } from './threejs/OrbitControls.js';
+  <div class="container">
+    <div class="canvas3d">
+      <div class="right-corner">
+        <div>
+          <button class="btn info" id="myBtn">Rotate Artwork</button>
+          <input type="number" placeholder="Angle" id="angleInput">
+        </div>
+        <button class="btn info" id="setBtn">Apply Artwork</button>
+      </div>
+      <canvas id="canvas3d" class="canvas3js"></canvas>
+    </div>
 
-    var scene = new THREE.Scene();
-    var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    <div class="canvasCrop">
+        <button class="btn success right-corner" id="cropBtn">Crop</button>
+        <img id="image" src="resources/Kellogg's Artwork.jpg">
+        <div class="image_lib">
+            <h3>Artwork Crop Library:</h3>
+        </div>
+    </div>
+  </div>
 
-    var renderer = new THREE.WebGLRenderer();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
+  <script src="threejs/three.min.js"></script>
+  <script src="threejs/threex.domevents.js"></script>
+  <script src="threejs/cropper.min.js"></script>
 
-    let cube = null;
-
-    let controls = new OrbitControls(camera, renderer.domElement);
-    //controls.addEventListener( 'change', render ); // call this only in static scenes (i.e., if there is no animation loop)
-    controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
-    controls.dampingFactor = 0.25;
-    controls.screenSpacePanning = false;
-    controls.minDistance = 1;
-    controls.maxDistance = 5;
-    controls.maxPolarAngle = Math.PI / 2;
-
-    const loadManager = new THREE.LoadingManager();
-    const loader = new THREE.TextureLoader(loadManager);
-
-    const materials = [
-      new THREE.MeshBasicMaterial({ map: loader.load('resources/1.jpg') }),
-      new THREE.MeshBasicMaterial({ map: loader.load('resources/bizongo.jpg') }),
-      new THREE.MeshBasicMaterial({ map: loader.load('resources/eye.jpg') }),
-      new THREE.MeshBasicMaterial({ map: loader.load('resources/facebook.png') }),
-      new THREE.MeshBasicMaterial({ map: loader.load('resources/pintrest.png') }),
-      new THREE.MeshBasicMaterial({ map: loader.load('resources/windows.png') }),
-    ];
-
-    loadManager.onLoad = () => {
-      var geometry = new THREE.CubeGeometry(1, 1, 1);
-      cube = new THREE.Mesh(geometry, materials);
-      camera.position.z = 5;
-      scene.add(cube);
-    }
-
-    var animate = function () {
-      requestAnimationFrame(animate);
-
-      // cube.rotation.x += 0.01;
-      // cube.rotation.y += 0.01;
-      controls.update();
-
-      renderer.render(scene, camera);
-    };
-
-    animate();
-
-  </script>
+  <script src="3d.js" type="module"></script>
+  <!-- <script src="crop.js"></script> -->
 </body>
 
 </html>
