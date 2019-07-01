@@ -19,7 +19,7 @@ function onClickImageItem(e) {
   }
 }
 
-export function getSelectedImageData() {
+function getSelectedImageData() {
   if (!selectedImage) return null;
   const el = document.getElementById(selectedImage);
   return {

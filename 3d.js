@@ -1,6 +1,6 @@
 // import * as THREE from './threejs/three.module.js';
-import { OrbitControls } from './threejs/OrbitControls.js';
-import * as Crop from './crop.js';
+// import { OrbitControls } from './threejs/OrbitControls.js';
+// import * as Crop from './crop.js';
 
 const loadManager = new THREE.LoadingManager();
 const loader = new THREE.TextureLoader(loadManager);
@@ -123,7 +123,7 @@ const faceToImageMap = {};
 function setTexture() {
   if (selectedFaceIndex < 0) return;
 
-  const image = Crop.getSelectedImageData();
+  const image = getSelectedImageData();
   if (!(image.id in textures)) textures[image.id] = loader2.load(image.data);
   textures[image.id].center.set(.5, .5);
 
