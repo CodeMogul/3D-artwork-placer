@@ -1,58 +1,45 @@
+<!--
+TODO:
+// add light
+// change Material
+-->
+
 <html>
-	<head>
-		<title>My first three.js app</title>
-		<style>
-			body { margin: 0; }
-			canvas { width: 100%; height: 100% }
-		</style>
-	</head>
-	<body>
-		<script src="three.min.js"></script>
-		<script>
-			var scene = new THREE.Scene();
-			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
 
-			var renderer = new THREE.WebGLRenderer();
-			renderer.setSize( window.innerWidth, window.innerHeight );
-			document.body.appendChild( renderer.domElement );
+<head>
+  <title>#D Artwork Placement</title>
+  <link href="threejs/cropper.min.css" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet">
+</head>
 
-            let cube = null;
+<body>
+  <div class="container">
+    <div class="canvas3d">
+      <div class="right-corner">
+        <div>
+          <button class="btn info" id="myBtn">Rotate Artwork</button>
+          <input type="number" placeholder="Angle" id="angleInput">
+        </div>
+        <button class="btn info" id="setBtn">Apply Artwork</button>
+      </div>
+      <canvas id="canvas3d" class="canvas3js"></canvas>
+    </div>
 
-            var loader = new THREE.TextureLoader();
-            loader.load(
-                    // resource URL
-                'sample.jpg',
-                // onLoad callback
-                function ( texture ) {
-                    // in this example we create the material when the texture is loaded
-                    var material = new THREE.MeshBasicMaterial( {
-                        map: texture
-                    } );
-                    var geometry = new THREE.CubeGeometry( 1, 1, 1 );
-                    // var material = new THREE.MeshBasicMaterial( { color: 0xf0f000 } );
-                    cube = new THREE.Mesh( geometry, material );
-                    scene.add( cube );
+    <div class="canvasCrop">
+        <button class="btn success right-corner" id="cropBtn">Crop</button>
+        <img id="image" src="resources/Kellogg's Artwork.jpg">
+        <div class="image_lib">
+            <h3>Artwork Crop Library:</h3>
+        </div>
+    </div>
+  </div>
 
-                    camera.position.z = 5;
+  <script src="threejs/three.min.js"></script>
+  <script src="threejs/threex.domevents.js"></script>
+  <script src="threejs/cropper.min.js"></script>
 
-                    var animate = function () {
-                        requestAnimationFrame( animate );
+  <script src="3d.js" type="module"></script>
+  <!-- <script src="crop.js"></script> -->
+</body>
 
-                        cube.rotation.x += 0.01;
-                        cube.rotation.y += 0.01;
-
-                        renderer.render( scene, camera );
-                    };
-
-                    animate();
-                },
-                // onProgress callback currently not supported
-                undefined,
-                // onError callback
-                function ( err ) {
-                    console.error( 'An error happened.' );
-                }
-            );
-		</script>
-	</body>
 </html>
